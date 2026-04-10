@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dein perfekter Tag auf Hawaii</title>
+  <style>
+    :root {
+      --bg1: #f7c97a;
+      --bg2: #ff8f70;
+      --bg3: #4568dc;
+      --card: rgba(255,255,255,0.16);
+      --card-strong: rgba(255,255,255,0.24);
+      --text: #fffdf8;
+      --text-soft: rgba(255,253,248,0.8);
+      --shadow: 0 20px 50px rgba(10, 24, 60, 0.25);
+      --radius: 28px;
+      --accent: #fff4d7;
+      --accent-dark: #5c3d1f;
+      --danger: rgba(255,255,255,0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(140deg, var(--bg1) 0%, var(--bg2) 38%, var(--bg3) 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      width: 260px;
+      height: 260px;
+      background: rgba(255,255,255,0.38);
+      top: 60px;
+      right: -70px;
+    }
+
+    body::after {
+      width: 220px;
+      height: 220px;
+      background: rgba(255,214,153,0.45);
+      bottom: 40px;
+      left: -60px;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
+    }
+
+    .shell {
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.10));
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 36px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .topbar {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+    }
+
+    .topbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      color: var(--text-soft);
+    }
+
+    h1 {
+      margin: 8px 0 0;
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.06;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--text-soft);
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 55ch;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      color: var(--text);
+      font-size: 0.92rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      white-space: nowrap;
+    }
+
+    .progress-wrap {
+      margin-top: 14px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,244,215,1), rgba(255,255,255,0.88));
+      transition: width 280ms ease;
+    }
+
+    .content {
+      padding: 20px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .story {
+      font-size: 1rem;
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .question {
+      margin: 10px 0 0;
+      font-size: clamp(1.25rem, 3.2vw, 1.8rem);
+      line-height: 1.2;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0.12));
+      color: var(--text);
+      border-radius: 22px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .option:hover,
+    .option:focus-visible {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.16));
+      border-color: rgba(255,255,255,0.34);
+      outline: none;
+    }
+
+    .option-title {
+      display: block;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .option-text {
+      display: block;
+      color: var(--text-soft);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .remaining {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ghost,
+    .primary {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+    }
+
+    .ghost:hover,
+    .primary:hover,
+    .ghost:focus-visible,
+    .primary:focus-visible {
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .ghost {
+      background: rgba(255,255,255,0.14);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .result {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.13));
+    }
+
+    .result::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -70px;
+      top: -50px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      filter: blur(6px);
+    }
+
+    .result-emoji {
+      font-size: 3rem;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .result-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin: 0;
+      line-height: 1.08;
+    }
+
+    .result-copy {
+      margin: 12px 0 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      max-width: 54ch;
+    }
+
+    .highlight {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .highlight strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 1rem;
+    }
+
+    .tiny {
+      margin-top: 12px;
+      color: rgba(255,253,248,0.72);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      width: 10px;
+      height: 18px;
+      opacity: 0.9;
+      border-radius: 3px;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0.1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app { padding: 14px 12px 28px; }
+      .content { padding: 14px; }
+      .topbar { padding: 16px 14px 12px; }
+      .card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="shell">
+      <div class="topbar">
+        <div class="topbar-row">
+          <div>
+            <div class="eyebrow">Geburtstagsgeschenk</div>
+            <h1>Dein perfekter Tag auf Hawaii</h1>
+            <p class="subtitle">Eine kleine Entscheidungsreise, die Schritt für Schritt zu genau einem Erlebnis führt.</p>
+          </div>
+          <div class="tag">🌺 Fortschritt wird lokal gespeichert</div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progressLabel">Bereit zum Start</span>
+            <span id="remainingLabel">7 Möglichkeiten</span>
+          </div>
+          <div class="progress"><span id="progressBar"></span></div>
+        </div>
+      </div>
+
+      <main class="content" id="app"></main>
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const STORAGE_KEY = "hawaii-gift-app-state-v1";
+
+    const activities = {
+      coffee: {
+        id: "coffee",
+        emoji: "☕",
+        title: "Kaffeetour bei Heavenly Hawaiian Kona Coffee Farm Tours",
+        short: "Kaffeetour",
+        description: "Ein ruhiger, lokaler Start in den Tag mit Kaffee, Plantagen-Feeling und viel Hawaii-Stimmung.",
+        giftText: "Ich schenke dir eine Kaffeetour inklusive Kaffeetrinken bei Heavenly Hawaiian Kona Coffee Farm Tours."
+      },
+      dukes: {
+        id: "dukes",
+        emoji: "🍹",
+        title: "Apero oder Pre-Drinks bei Duke’s Waikiki Bar",
+        short: "Apero bei Duke’s",
+        description: "Entspannte Drinks, Meerblick, Waikiki-Vibes und genau die richtige Portion Feriengefühl.",
+        giftText: "Ich schenke dir einen Apero oder Pre-Drinks bei Duke’s Waikiki Bar."
+      },
+      snorkel: {
+        id: "snorkel",
+        emoji: "🤿",
+        title: "Schnorcheltrip",
+        short: "Schnorcheltrip",
+        description: "Ein entspannter Ausflug ins Wasser mit Riffen, Fischen und klassischem Hawaii-Abenteuer.",
+        giftText: "Ich schenke dir einen Schnorcheltrip auf Hawaii."
+      },
+      manta: {
+        id: "manta",
+        emoji: "✨",
+        title: "Manta Ray Night Snorkeling",
+        short: "Manta Ray Night Snorkeling",
+        description: "Ein magisches Nachterlebnis im Wasser mit einer der beeindruckendsten Begegnungen, die Hawaii zu bieten hat.",
+        giftText: "Ich schenke dir Manta Ray Night Snorkeling."
+      },
+      surf: {
+        id: "surf",
+        emoji: "🏄‍♀️",
+        title: "Surflektion",
+        short: "Surflektion",
+        description: "Wellen, Balance und ein echtes Hawaii-Gefühl – ideal für einen aktiven, unvergesslichen Moment.",
+        giftText: "Ich schenke dir eine Surflektion."
+      },
+      skydiving: {
+        id: "skydiving",
+        emoji: "🪂",
+        title: "Skydiving",
+        short: "Skydiving",
+        description: "Die wildeste Variante: hoch hinaus und mit maximalem Adrenalin auf Hawaii herabschauen.",
+        giftText: "Ich schenke dir Skydiving auf Hawaii."
+      },
+      catamaran: {
+        id: "catamaran",
+        emoji: "🌅",
+        title: "Katamaranfahrt bei Sonnenuntergang mit Cocktails und Snacks",
+        short: "Sunset-Katamaran",
+        description: "Golden Hour auf dem Wasser, entspannte Stimmung, Drinks und ein Abend wie aus einem Film.",
+        giftText: "Ich schenke dir eine Katamaranfahrt bei Sonnenuntergang mit Cocktails und Snacks."
+      }
+    };
+
+    const nodes = {
+      intro: {
+        type: "intro",
+        title: "Willkommen auf Hawaii",
+        story: "Du wachst auf Hawaii auf. Die Sonne scheint, die Luft ist warm und heute gehört der Tag nur dir. Mit jeder Entscheidung kommst du deinem perfekten Erlebnis ein Stück näher.",
+        candidates: ["coffee", "dukes", "snorkel", "manta", "surf", "skydiving", "catamaran"],
+        primaryLabel: "Reise starten",
+        next: "q1"
+      },
+      q1: {
+        type: "question",
+        stepLabel: "Entscheidung 1",
+        story: "Der Tag beginnt – und du spürst sofort, in welche Richtung er gehen soll.",
+        question: "Wonach fühlt sich dein perfekter Hawaii-Tag eher an?",
+        candidates: ["coffee", "dukes", "snorkel", "manta", "surf", "skydiving", "catamaran"],
+        options: [
+          {
+            title: "Abenteuer und etwas Neues",
+            text: "Ich möchte einen Moment, der sich lebendig, mutig und besonders anfühlt.",
+            next: "q2_action",
+            candidates: ["snorkel", "manta", "surf", "skydiving"]
+          },
+          {
+            title: "Genuss und Inselgefühl",
+            text: "Ich möchte entspannen, genießen und die Atmosphäre aufsaugen.",
+            next: "q2_enjoy",
+            candidates: ["coffee", "dukes", "catamaran"]
+          }
+        ]
+      },
+      q2_action: {
+        type: "question",
+        stepLabel: "Entscheidung 2",
+        story: "Du hast Lust auf etwas mit Adrenalin oder Meeresmagie.",
+        question: "Welches Element zieht dich heute am meisten an?",
+        candidates: ["snorkel", "manta", "surf", "skydiving"],
+        options: [
+          {
+            title: "Das Meer",
+            text: "Salz auf der Haut, Wasser um mich herum und echtes Hawaii-Feeling.",
+            next: "q3_water",
+            candidates: ["snorkel", "manta", "surf"]
+          },
+          {
+            title: "Der Himmel",
+            text: "Ich will die verrückte Variante und maximalen Nervenkitzel.",
+            next: "result_skydiving",
+            candidates: ["skydiving"]
+          }
+        ]
+      },
+      q3_water: {
+        type: "question",
+        stepLabel: "Entscheidung 3",
+        story: "Das Meer ist gesetzt. Jetzt geht es darum, wie du es erleben möchtest.",
+        question: "Wie willst du am liebsten mit dem Ozean in Kontakt kommen?",
+        candidates: ["snorkel", "manta", "surf"],
+        options: [
+          {
+            title: "Auf den Wellen",
+            text: "Bewegung, Balance und das Gefühl, selbst aktiv zu sein.",
+            next: "q4_surf",
+            candidates: ["surf"]
+          },
+          {
+            title: "Unter der Oberfläche",
+            text: "Ich möchte schauen, staunen und die Unterwasserwelt erleben.",
+            next: "q4_underwater",
+            candidates: ["snorkel", "manta"]
+          }
+        ]
+      },
+      q4_surf: {
+        type: "question",
+        stepLabel: "Entscheidung 4",
+        story: "Du siehst bereits die Wellen vor dir.",
+        question: "Was reizt dich daran am meisten?",
+        candidates: ["surf"],
+        options: [
+          {
+            title: "Etwas Neues lernen",
+            text: "Ich will es ausprobieren, begleitet werden und ein echtes Hawaii-Highlight erleben.",
+            next: "result_surf",
+            candidates: ["surf"]
+          }
+        ]
+      },
+      q4_underwater: {
+        type: "question",
+        stepLabel: "Entscheidung 4",
+        story: "Unter Wasser wartet entweder ein klassischer Traumtag oder etwas richtig Magisches.",
+        question: "Welche Stimmung passt besser zu dir?",
+        candidates: ["snorkel", "manta"],
+        options: [
+          {
+            title: "Sonne, Riff und entspannter Ausflug",
+            text: "Ich möchte tagsüber schnorcheln und das Meer ganz klassisch genießen.",
+            next: "q5_snorkel",
+            candidates: ["snorkel"]
+          },
+          {
+            title: "Nacht, Staunen und etwas Einmaliges",
+            text: "Ich will ein besonderes Erlebnis, das sich fast surreal anfühlt.",
+            next: "q5_manta",
+            candidates: ["manta"]
+          }
+        ]
+      },
+      q5_snorkel: {
+        type: "question",
+        stepLabel: "Entscheidung 5",
+        story: "Die Entscheidung ist fast gefallen.",
+        question: "Und was soll am Ende überwiegen?",
+        candidates: ["snorkel"],
+        options: [
+          {
+            title: "Entspanntes Entdecken",
+            text: "Ich möchte ein schönes Meereserlebnis ohne allzu viel Drama.",
+            next: "result_snorkel",
+            candidates: ["snorkel"]
+          }
+        ]
+      },
+      q5_manta: {
+        type: "question",
+        stepLabel: "Entscheidung 5",
+        story: "Du bist kurz vor dem Reveal.",
+        question: "Was macht das perfekte Erlebnis für dich aus?",
+        candidates: ["manta"],
+        options: [
+          {
+            title: "Magie und Wow-Moment",
+            text: "Ich will eine Erinnerung, die man noch lange weitererzählt.",
+            next: "result_manta",
+            candidates: ["manta"]
+          }
+        ]
+      },
+      q2_enjoy: {
+        type: "question",
+        stepLabel: "Entscheidung 2",
+        story: "Heute darf es genussvoll werden – nur die Richtung ist noch offen.",
+        question: "Welche Tageszeit klingt nach deinem Lieblingsmoment?",
+        candidates: ["coffee", "dukes", "catamaran"],
+        options: [
+          {
+            title: "Ein ruhiger Start",
+            text: "Morgens oder tagsüber, mit lokalen Eindrücken und entspannter Stimmung.",
+            next: "q3_morning",
+            candidates: ["coffee"]
+          },
+          {
+            title: "Ein goldener Abend",
+            text: "Später am Tag, wenn Licht, Stimmung und Drinks besonders gut passen.",
+            next: "q3_evening",
+            candidates: ["dukes", "catamaran"]
+          }
+        ]
+      },
+      q3_morning: {
+        type: "question",
+        stepLabel: "Entscheidung 3",
+        story: "Du nimmst dir Zeit, Hawaii langsam zu erleben.",
+        question: "Was macht diesen entspannten Moment perfekt?",
+        candidates: ["coffee"],
+        options: [
+          {
+            title: "Lokal, genussvoll und authentisch",
+            text: "Ich möchte etwas über Kona erfahren, gute Vibes spüren und Kaffee genießen.",
+            next: "q4_coffee",
+            candidates: ["coffee"]
+          }
+        ]
+      },
+      q4_coffee: {
+        type: "question",
+        stepLabel: "Entscheidung 4",
+        story: "Fast da – es fehlt nur noch die letzte Bestätigung.",
+        question: "Welche Art von Erinnerung möchtest du mitnehmen?",
+        candidates: ["coffee"],
+        options: [
+          {
+            title: "Ein warmer, gemütlicher Inselmoment",
+            text: "Etwas, das ruhig startet und trotzdem ganz besonders bleibt.",
+            next: "result_coffee",
+            candidates: ["coffee"]
+          }
+        ]
+      },
+      q3_evening: {
+        type: "question",
+        stepLabel: "Entscheidung 3",
+        story: "Der Abend übernimmt – jetzt zählt nur noch die Art der Stimmung.",
+        question: "Wie möchtest du den Sonnenuntergang am liebsten erleben?",
+        candidates: ["dukes", "catamaran"],
+        options: [
+          {
+            title: "An Land, mit lebendiger Atmosphäre",
+            text: "Ich mag Menschen, Musik, Waikiki-Vibes und einen entspannten Drink.",
+            next: "q4_dukes",
+            candidates: ["dukes"]
+          },
+          {
+            title: "Direkt auf dem Wasser",
+            text: "Ich möchte Wind, Wellen, Sunset-Glow und etwas Filmreifes.",
+            next: "q4_catamaran",
+            candidates: ["catamaran"]
+          }
+        ]
+      },
+      q4_dukes: {
+        type: "question",
+        stepLabel: "Entscheidung 4",
+        story: "Du hörst das Klirren der Gläser schon fast.",
+        question: "Welche Stimmung soll bleiben, wenn du später daran denkst?",
+        candidates: ["dukes"],
+        options: [
+          {
+            title: "Locker, ikonisch und gesellig",
+            text: "Ein Abend mit Feriengefühl, guter Stimmung und einem Drink in Waikiki.",
+            next: "result_dukes",
+            candidates: ["dukes"]
+          }
+        ]
+      },
+      q4_catamaran: {
+        type: "question",
+        stepLabel: "Entscheidung 4",
+        story: "Nur noch ein letzter Gedanke trennt dich vom Geschenk.",
+        question: "Was klingt nach dem schönsten Finale?",
+        candidates: ["catamaran"],
+        options: [
+          {
+            title: "Sunset, Cocktails und Meerblick",
+            text: "Ich will einen Abend, der ruhig beginnt und wunderschön endet.",
+            next: "result_catamaran",
+            candidates: ["catamaran"]
+          }
+        ]
+      },
+      result_coffee: makeResultNode("coffee"),
+      result_dukes: makeResultNode("dukes"),
+      result_snorkel: makeResultNode("snorkel"),
+      result_manta: makeResultNode("manta"),
+      result_surf: makeResultNode("surf"),
+      result_skydiving: makeResultNode("skydiving"),
+      result_catamaran: makeResultNode("catamaran")
+    };
+
+    function makeResultNode(activityId) {
+      return {
+        type: "result",
+        activityId,
+        candidates: [activityId]
+      };
+    }
+
+    const pathDepthMap = computePathDepths();
+
+    function computePathDepths() {
+      const map = {};
+      function walk(nodeId, depth) {
+        const node = nodes[nodeId];
+        if (!node) return;
+        map[nodeId] = Math.max(map[nodeId] || 0, depth);
+        if (node.type === "intro" && node.next) {
+          walk(node.next, depth + 1);
+        }
+        if (node.type === "question") {
+          node.options.forEach(opt => walk(opt.next, depth + 1));
+        }
+      }
+      walk("intro", 0);
+      return map;
+    }
+
+    let state = loadState() || { currentNode: "intro", history: [] };
+
+    const appEl = document.getElementById("app");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+    const remainingLabel = document.getElementById("remainingLabel");
+    const confettiEl = document.getElementById("confetti");
+
+    render();
+
+    function render() {
+      const node = nodes[state.currentNode];
+      if (!node) return;
+
+      updateTop(node);
+
+      if (node.type === "intro") {
+        appEl.innerHTML = `
+          <section class="card">
+            <p class="story">${node.story}</p>
+            <div class="highlight">
+              <strong>Wie es funktioniert</strong>
+              <div>Mit jeder Entscheidung verschwinden Möglichkeiten, bis am Ende genau ein Hawaii-Erlebnis übrig bleibt.</div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="remaining">${renderCandidates(node.candidates)}</div>
+          </section>
+          <section class="footer-actions">
+            <button class="primary" id="primaryAction">${node.primaryLabel}</button>
+            <button class="ghost" id="resetAction">Neu starten</button>
+          </section>
+        `;
+        document.getElementById("primaryAction").onclick = () => goTo(node.next);
+        document.getElementById("resetAction").onclick = reset;
+      }
+
+      if (node.type === "question") {
+        appEl.innerHTML = `
+          <section class="card">
+            <div class="eyebrow">${node.stepLabel}</div>
+            <p class="story">${node.story}</p>
+            <h2 class="question">${node.question}</h2>
+          </section>
+          <section class="card">
+            <div class="remaining">${renderCandidates(node.candidates)}</div>
+          </section>
+          <section class="options">
+            ${node.options.map((opt, index) => `
+              <button class="option" data-index="${index}">
+                <span class="option-title">${opt.title}</span>
+                <span class="option-text">${opt.text}</span>
+              </button>
+            `).join("")}
+          </section>
+          <section class="footer-actions">
+            <button class="ghost" id="backAction">Zurück</button>
+            <button class="ghost" id="resetAction">Neu starten</button>
+          </section>
+        `;
+
+        appEl.querySelectorAll(".option").forEach(btn => {
+          btn.onclick = () => {
+            const index = Number(btn.dataset.index);
+            const option = node.options[index];
+            state.history.push(state.currentNode);
+            saveState();
+            goTo(option.next);
+          };
+        });
+
+        document.getElementById("backAction").onclick = back;
+        document.getElementById("resetAction").onclick = reset;
+      }
+
+      if (node.type === "result") {
+        const activity = activities[node.activityId];
+        appEl.innerHTML = `
+          <section class="card result">
+            <div class="result-emoji">${activity.emoji}</div>
+            <div class="eyebrow">Dein Geschenk</div>
+            <h2 class="result-title">${activity.title}</h2>
+            <p class="result-copy">${activity.description}</p>
+            <div class="highlight">
+              <strong>Auflösung</strong>
+              <div>${activity.giftText}</div>
+            </div>
+            <p class="tiny">Tipp: Du kannst den Text im HTML später noch personalisieren, zum Beispiel mit ihrem Namen oder einer eigenen Widmung.</p>
+          </section>
+          <section class="card">
+            <div class="eyebrow">So bist du hier gelandet</div>
+            <p class="story">Schritt für Schritt wurden alle anderen Möglichkeiten ausgeschlossen, bis nur noch dieses Erlebnis übrig geblieben ist.</p>
+            <div class="remaining">${renderCandidates([node.activityId])}</div>
+          </section>
+          <section class="footer-actions">
+            <button class="ghost" id="backAction">Zurück</button>
+            <button class="primary" id="resetAction">Noch einmal spielen</button>
+          </section>
+        `;
+        document.getElementById("backAction").onclick = back;
+        document.getElementById("resetAction").onclick = reset;
+        launchConfetti();
+      }
+    }
+
+    function updateTop(node) {
+      const currentDepth = pathDepthMap[state.currentNode] || 0;
+      const maxDepth = 5;
+      const percentage = Math.min(100, Math.max(6, (currentDepth / maxDepth) * 100));
+      progressBar.style.width = `${node.type === "result" ? 100 : percentage}%`;
+
+      if (node.type === "intro") {
+        progressLabel.textContent = "Bereit zum Start";
+      } else if (node.type === "result") {
+        progressLabel.textContent = "Geschenk gefunden";
+      } else {
+        progressLabel.textContent = node.stepLabel;
+      }
+
+      const candidateCount = node.candidates?.length || 0;
+      remainingLabel.textContent = candidateCount === 1
+        ? "1 Möglichkeit übrig"
+        : `${candidateCount} Möglichkeiten übrig`;
+    }
+
+    function renderCandidates(candidateIds) {
+      return candidateIds.map(id => {
+        const item = activities[id];
+        return `<span class="pill">${item.emoji} ${item.short}</span>`;
+      }).join("");
+    }
+
+    function goTo(nodeId) {
+      state.currentNode = nodeId;
+      saveState();
+      render();
+    }
+
+    function back() {
+      if (!state.history.length) {
+        goTo("intro");
+        return;
+      }
+      state.currentNode = state.history.pop();
+      saveState();
+      render();
+    }
+
+    function reset() {
+      state = { currentNode: "intro", history: [] };
+      saveState();
+      clearConfetti();
+      render();
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function launchConfetti() {
+      clearConfetti();
+      const pieces = 28;
+      for (let i = 0; i < pieces; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.background = ["#fff4d7", "#ffffff", "#ffd79b", "#ffe7bf"][i % 4];
+        piece.style.animationDuration = `${3 + Math.random() * 2.8}s`;
+        piece.style.animationDelay = `${Math.random() * 0.6}s`;
+        piece.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+        confettiEl.appendChild(piece);
+      }
+      setTimeout(clearConfetti, 5200);
+    }
+
+    function clearConfetti() {
+      confettiEl.innerHTML = "";
+    }
+  </script>
+</body>
+</html>
